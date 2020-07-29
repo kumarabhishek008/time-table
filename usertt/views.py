@@ -5,7 +5,7 @@ from django.contrib import auth
 from django.core.exceptions import *
 from django.contrib.auth.decorators import login_required
 from .models import timetablecolumn
-from .forms import timetable_form
+from .forms import timetable_form,DeleteRow
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -16,8 +16,11 @@ def index(request):
     user_table4 = timetablecolumn.objects.filter(row= "fourth")
     user_table5 = timetablecolumn.objects.filter(row= "fifth")
     user_table6 = timetablecolumn.objects.filter(row= "sixth")
+    form = timetable_form()
+    form1 = DeleteRow()
     return render(request,'usertt/index.html',{'usertable_1':user_table1,'usertable_2':user_table2,
-                    'usertable_3':user_table3,'usertable_4':user_table4,'usertable_5':user_table5,'usertable_6':user_table6})
+                    'usertable_3':user_table3,'usertable_4':user_table4,'usertable_5':user_table5,
+                    'usertable_6':user_table6,'form':form,'form1':form1})
 
 def register(request):
     if request.method =='POST':
@@ -84,6 +87,30 @@ def logout(request):
         auth.logout(request)
         return redirect('/')
 
-def editcontent(request,row):
+def editcontent(request):
     form = timetable_form()
-    return render(request,'usertt/index.html',{'form':form})
+    
+
+    if request.method == 'POST':
+        ROw = request.POST['row']
+        table = timetablecolumn.objects.get(row=ROw)
+
+        form = timetable_form(request.POST,instance=table)
+        if form.is_valid:
+            form.save()
+            return redirect('/')
+
+    return redirect('/')
+
+def delete(request):
+    form1 = DeleteRow()
+    if request.method=='POST':
+        Row = request.POST['row']
+        deleterow = timetablecolumn.objects.get(row=Row)
+        deleterow.delete()
+        form1 = DeleteRow(request.POST,instance=deleterow)
+        if form1.is_valid:
+            form1.save()
+            return redirect('/')
+    else:
+        return redirect('/')
