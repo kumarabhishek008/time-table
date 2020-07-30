@@ -5,22 +5,21 @@ from django.contrib import auth
 from django.core.exceptions import *
 from django.contrib.auth.decorators import login_required
 from .models import timetablecolumn
-from .forms import timetable_form,DeleteRow
+
 
 # Create your views here.
 @login_required(login_url='/login')
 def index(request):
-    user_table1 = timetablecolumn.objects.filter(row = "first")
-    user_table2 = timetablecolumn.objects.filter(row= "second")
-    user_table3 = timetablecolumn.objects.filter(row= "third")
-    user_table4 = timetablecolumn.objects.filter(row= "fourth")
-    user_table5 = timetablecolumn.objects.filter(row= "fifth")
-    user_table6 = timetablecolumn.objects.filter(row= "sixth")
-    form = timetable_form()
-    form1 = DeleteRow()
+    user_table1 = timetablecolumn.objects.filter(user= request.user,row = "first")
+    user_table2 = timetablecolumn.objects.filter(user=request.user,row= "second")
+    user_table3 = timetablecolumn.objects.filter(user=request.user,row= "third")
+    user_table4 = timetablecolumn.objects.filter(user=request.user,row= "fourth")
+    user_table5 = timetablecolumn.objects.filter(user=request.user,row= "fifth")
+    user_table6 = timetablecolumn.objects.filter(user=request.user,row= "sixth")
+    
     return render(request,'usertt/index.html',{'usertable_1':user_table1,'usertable_2':user_table2,
                     'usertable_3':user_table3,'usertable_4':user_table4,'usertable_5':user_table5,
-                    'usertable_6':user_table6,'form':form,'form1':form1})
+                    'usertable_6':user_table6})
 
 def register(request):
     if request.method =='POST':
@@ -87,7 +86,27 @@ def logout(request):
         auth.logout(request)
         return redirect('/')
 
-def editcontent(request):
+def DeleteRow(request):
+    if request.method=='POST':
+        deleteday = request.POST['row']
+        deletetable = timetablecolumn.objects.filter(user=request.user,c1=deleteday)
+        deletetable.delete()
+        return redirect('/')
+
+
+def AddTable(request):
+    add_table = timetablecolumn.objects.create(row="first")
+    add_table.save()
+    add_table.user.add(request.user)
+    add_table.user.set([request.user])
+    return redirect('/')
+
+def UpdateRow(request):
+    return redirect('/')
+
+
+
+'''def editcontent(request):
     form = timetable_form()
     
 
@@ -113,4 +132,4 @@ def delete(request):
             form1.save()
             return redirect('/')
     else:
-        return redirect('/')
+        return redirect('/')'''

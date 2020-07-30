@@ -11,6 +11,7 @@ class timetablecolumn(models.Model):
     subject = (('SUB1','SUB1'),('SUB2','SUB2'),('SUB3','SUB3'),('SUB4','SUB4'),('SUB5','SUB5'),
                ('counselling class','counselling class'),('library','library'),('seminar','seminar'),('---','---'),('lunch','lunch'),
                ('lab','lab'),('SWA','SWA'))
+    user = models.ManyToManyField(User)
     row = models.CharField(max_length=15,choices=rowchoice)
     c1=models.CharField(max_length=20,default="---",choices=week_choice)
     c2=models.CharField(max_length=20,default="---",choices=subject)
@@ -25,9 +26,10 @@ class timetablecolumn(models.Model):
         return self.c1
 
 
-'''class usertable(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE,default=None)
-    time_table = models.ForeignKey(timetablecolumn,on_delete=models.CASCADE,default=None)'''
+class usertable(models.Model):
+    time_table = models.ForeignKey(timetablecolumn,on_delete=models.CASCADE,default=None)
+    
+    
 
     
     

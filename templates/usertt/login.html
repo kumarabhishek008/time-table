@@ -16,9 +16,9 @@
 </style>
 </head>
 
-
+<br>
 <div class="container container-center" style="color:black">
-<div class="jumbotron  text-left col-sm-12" style="background-color:grey">
+<div class=" jumbotron text-left col-sm-12" style="background-color:grey">
 <div class=col-sm-4></div>
 <form action="login" method="post"  class="col-sm-4">
     {% csrf_token %}
@@ -33,17 +33,11 @@
 
 
     <button type="submit" class="btn btn-default">login</button>
-
 </form>
+</div>
 
-<!--
-<form action="reset pass" method="post" class="">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-default">forgot password</button>
-</form>
-</div>-->
-
-
+<a href="register" ><button class="btn btn-danger">SignUp</button></a>
+</div>
     {% for message in messages %}
     {{message}}
     {% endfor %}
