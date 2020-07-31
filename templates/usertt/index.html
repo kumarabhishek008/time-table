@@ -34,7 +34,7 @@
 
 <div class="container timetable" style="padding-bottom:200px;">
 
-<H1><FONT COLOR="DARKCYAN"><CENTER>TIME TABLE</FONT></H1>
+<H1><FONT COLOR="DARKCYAN"><CENTER>COLLEGE TIME TABLE</FONT></H1>
 
 <div class="container">
 
@@ -49,7 +49,7 @@
     <button id="mergeRows" class="btn btn-info">Merge Rows</button>
  </div>
 
- <input type='hidden' value='{% for j in usertable_1 %}{{j.id}}{% endfor %}' id='txt_id'>
+<input type='hidden' value='{% for j in usertable_1 %}{{j.id}}{% endfor %}' id='txt_id'>
 </div>
 <table border="2" cellspacing="3" align="center" class="editableTable" align="center">
     {% if user_len == 0 %}
@@ -137,17 +137,25 @@
     {% else %}
     {% for i in usertable_1 %}
         {{ i | safe}}
-        {{i.id}}
     {% endfor %}
     {% endif %}
     
 </table>
-<div class="text-center" style="padding:20"><button class="btn btn-success text-center" onclick="myfunc()">save</button></div>
+    <div class="text-center" style="padding:20">
+        <button class="btn btn-success text-center" onclick="myfunc()">save</button>
+    </div>
+    <div class="container">
+        <ul>
+            <li><p3>Right click on table to edit rows and coloumn .</p3></li>
+            <li><p3>Press ctrl button to select cells and then Right click to choose merge options according to selection .</p3></li>
+            <li><p3>Column cells and row cells should be adjacent to be merged .</p3></li>
+        </ul>
+    </div>
 </div>
 <hr>
 <br>
 {% for i in messages %}
-{{i}}
+    {{i}}
 {% endfor %}
 {% endblock %}
 <hr>

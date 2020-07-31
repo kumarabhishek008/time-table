@@ -94,7 +94,7 @@ def UpdateorCreateRow(request):
     if request.method == 'POST':
         update_code = request.POST['code']
         table_id = request.POST['id']
-        print("data",table_id)
+        
         if table_id == '' :
             create_table=timetablecolumn.objects.create(c1=update_code)
             create_table.save()

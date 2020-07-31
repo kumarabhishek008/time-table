@@ -25,7 +25,7 @@
     </div>
    <form class="navbar-form navbar-right" action="search_user" method="post">
      {% csrf_token %}
-  <div class="input-group">
+  <div class="input-group hidden">
     <input type="text" name='username' class="form-control" placeholder="Search">
     <div class="input-group-btn">
       <button class="btn btn-default" type="submit">
@@ -44,7 +44,6 @@
 
 
       {% if user.is_authenticated %}
-      <li><a href={{user.profile.profile_pic.url}}><img src={{user.profile.profile_pic.url}} class="img-circle" width="29px" height="29px"></a></li>
         <li><a href="/"><span class="glyphicon"></span>welcome {{user.first_name}}</a></li>
 
         <li><a href="logout"><span class="glyphicon glyphicon-user"></span> logout</a></li>
