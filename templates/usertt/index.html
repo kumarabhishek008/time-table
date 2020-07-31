@@ -1,10 +1,30 @@
 {% extends 'usertt/base.html' %}
 
 {% block style %}
+    .editableTable td{
+        padding:10px;
+        min-width:100px;
+        text-align:center;
+    }
 
-.timetable {
-    background-color:skyblue;
-}
+
+    /* Context menu */
+    .context-menu{
+        display: none;
+        position: absolute;
+        border: 1px solid black;
+        border-radius: 3px;
+        width: 200px;
+        background: white;
+        box-shadow: 10px 10px 5px #888888;
+    }
+    .context-menu button{
+        display:block;
+        margin:5px;
+    }
+    td.selected{
+        background:#ccc;
+    }
 {% endblock %}
 
 {% block content %}
@@ -12,127 +32,304 @@
 {{i}}
 {% endfor %}
 
-<div class="container timetable">
-<H1><FONT COLOR="DARKCYAN"><CENTER>COLLEGE TIME TABLE</FONT></H1>
-<table border="2" cellspacing="3" align="center">
-<tr>
- <td align="center">
- <td>8:30-9:30
- <td>9:30-10:30
- <td>10:3-11:30
- <td>11:30-12:30
- <td>12:30-2:00
- <td>2:00-3:00
- <td>3:00-4:00
- <td>4:00-5:00
-</tr>
-{% for i in usertable_1 %}
-<tr>
- <td align="center" contenteditable="true">{{i.c1}}
- <td align="center" contenteditable="true">{{i.c2}}
- <td align="center" contenteditable="true"><font color="blue">{{i.c3}}<br>
- <td align="center" contenteditable="true"><font color="pink">{{i.c4}}<br>
- <td align="center" contenteditable="true"><font color="red">{{i.c5}}<br>
- <td align="center" contenteditable="true">{{i.c6}}
- <td align="center" contenteditable="true"><font color="maroon">{{i.c7}}<br>
- <td align="center" contenteditable="true"><font color="brown">{{i.c8}}<br>
- <td align="center" contenteditable="true">{{i.c9}}
-</tr>
-{% endfor %}
-{% for i in usertable_2 %}
-<tr>
- <td align="center" contenteditable="true">{{i.c1}}
- <td align="center" contenteditable="true">{{i.c2}}
- <td align="center" contenteditable="true"><font color="blue">{{i.c3}}<br>
- <td align="center" contenteditable="true"><font color="pink">{{i.c4}}<br>
- <td align="center" contenteditable="true"><font color="red">{{i.c5}}<br>
- <td align="center" contenteditable="true">{{i.c6}}
- <td align="center" contenteditable="true"><font color="maroon">{{i.c7}}<br>
- <td align="center" contenteditable="true"><font color="brown">{{i.c8}}<br>
- <td align="center" contenteditable="true">{{i.c9}}
-</tr>
-{% endfor %}
-{% for i in usertable_3 %}
-<tr>
- <td align="center" contenteditable="true">{{i.c1}}
- <td align="center" contenteditable="true">{{i.c2}}
- <td align="center" contenteditable="true"><font color="blue">{{i.c3}}<br>
- <td align="center" contenteditable="true"><font color="pink">{{i.c4}}<br>
- <td align="center" contenteditable="true"><font color="red">{{i.c5}}<br>
- <td align="center" contenteditable="true">{{i.c6}}
- <td align="center" contenteditable="true"><font color="maroon">{{i.c7}}<br>
- <td align="center" contenteditable="true"><font color="brown">{{i.c8}}<br>
- <td align="center" contenteditable="true">{{i.c9}}
-</tr>
-{% endfor %}
-{% for i in usertable_4 %}
-<tr>
- <td align="center" contenteditable="true">{{i.c1}}
- <td align="center" contenteditable="true">{{i.c2}}
- <td align="center" contenteditable="true"><font color="blue">{{i.c3}}<br>
- <td align="center" contenteditable="true"><font color="pink">{{i.c4}}<br>
- <td align="center" contenteditable="true"><font color="red">{{i.c5}}<br>
- <td align="center" contenteditable="true">{{i.c6}}
- <td align="center" contenteditable="true"><font color="maroon">{{i.c7}}<br>
- <td align="center" contenteditable="true"><font color="brown">{{i.c8}}<br>
- <td align="center" contenteditable="true">{{i.c9}}
-</tr>
-{% endfor %}
-{% for i in usertable_5 %}
-<tr>
- <td align="center" contenteditable="true">{{i.c1}}
- <td align="center" contenteditable="true">{{i.c2}}
- <td align="center" contenteditable="true"><font color="blue">{{i.c3}}<br>
- <td align="center" contenteditable="true"><font color="pink">{{i.c4}}<br>
- <td align="center" contenteditable="true"><font color="red">{{i.c5}}<br>
- <td align="center" contenteditable="true">{{i.c6}}
- <td align="center" contenteditable="true"><font color="maroon">{{i.c7}}<br>
- <td align="center" contenteditable="true"><font color="brown">{{i.c8}}<br>
- <td align="center" contenteditable="true">{{i.c9}}
-</tr>
-{% endfor %}
-{% for i in usertable_6 %}
-<tr>
- <td align="center" contenteditable="true">{{i.c1}}
- <td align="center" contenteditable="true">{{i.c2}}
- <td align="center" contenteditable="true"><font color="blue">{{i.c3}}<br>
- <td align="center" contenteditable="true"><font color="pink">{{i.c4}}<br>
- <td align="center" contenteditable="true"><font color="red">{{i.c5}}<br>
- <td align="center" contenteditable="true">{{i.c6}}
- <td align="center" contenteditable="true"><font color="maroon">{{i.c7}}<br>
- <td align="center" contenteditable="true"><font color="brown">{{i.c8}}<br>
- <td align="center" contenteditable="true">{{i.c9}}
-</tr>
-{% endfor %}
+<div class="container timetable" style="padding-bottom:200px;">
+
+<H1><FONT COLOR="DARKCYAN"><CENTER>TIME TABLE</FONT></H1>
+
+<div class="container">
+
+
+ <!-- Context-menu -->
+ <div class='context-menu'>
+    <button id="addRow" class="btn btn-info">Add Row</button>
+    <button id="deleteRow" class="btn btn-info">Delete Row</button>
+    <button id="addColumn" class="btn btn-info">Add Column</button>
+    <button id="deleteColumn" class="btn btn-info">Delete Column</button>
+    <button id="mergeColumns" class="btn btn-info">Merge Columns</button>
+    <button id="mergeRows" class="btn btn-info">Merge Rows</button>
+ </div>
+
+ <input type='hidden' value='{% for j in usertable_1 %}{{j.id}}{% endfor %}' id='txt_id'>
+</div>
+<table border="2" cellspacing="3" align="center" class="editableTable" align="center">
+    {% if user_len == 0 %}
+
+    <tbody>
+        <tr>
+            <td contenteditable="true"></td>
+            <td contenteditable="true">8:30-9:30</td>
+            <td contenteditable="true">9:30-10:30</td>
+            <td contenteditable="true">10:30-11:30</td>
+            <td contenteditable="true">11:30-12:30</td>
+            <td contenteditable="true">12:30-2:00</td>
+            <td contenteditable="true">2:00-3:00</td>
+            <td contenteditable="true">3:00-4:00</td>
+            <td contenteditable="true">4:00-5:00</td>
+        </tr>
+         <tr>
+            <td contenteditable="true">Monday</td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+         </tr>
+         <tr>
+            <td contenteditable="true">Tuesday</td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+         </tr>
+         <tr>
+            <td contenteditable="true">Wednesday</td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+         </tr>
+         <tr>
+            <td contenteditable="true">Thursday</td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+         </tr>
+         <tr>
+            <td contenteditable="true">Friday</td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+         </tr>
+         <tr>
+            <td contenteditable="true">Saturday</td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+         </tr>
+
+    </tbody>
+    {% else %}
+    {% for i in usertable_1 %}
+        {{ i | safe}}
+        {{i.id}}
+    {% endfor %}
+    {% endif %}
+    
 </table>
+<div class="text-center" style="padding:20"><button class="btn btn-success text-center" onclick="myfunc()">save</button></div>
 </div>
 <hr>
-
 <br>
-<div class="container col-sm-4">
-<form action="deleterow" method="post">
-{% csrf_token %}
-  <label for="row">Choose a row:</label>
-  <select name="row" id="row">
-    <option value="---">---</option>
-    <option value="MONDAY">monday</option>
-    <option value="TUESDAY">tuesday</option>
-    <option value="WEDNESDAY">wednesday</option>
-    <option value="THURSDAY">thursday</option>
-    <option value="FRIDAY">friday</option>
-    <option value="SATURDAY">saturday</option>
-    <option value="SUNDAY">sunday</option>
-    
-  </select>
-<button type="submit" value = "submit" class = "btn btn-danger">delete</button>
-</form>
-</div>
-
-<div class="container col-sm-4">
-<a href="addtable">
-<button type='submit' class='btn btn-success'>ADD ROW</button>
-</a>
-</div>
+{% for i in messages %}
+{{i}}
+{% endfor %}
 {% endblock %}
 <hr>
+
+{% block script %}
+    var currentElement = '';
+    $(document).ready(function(){    
+        var ctrlPressed = false;
+        $(document).on('keydown',function(e){
+            if(e.ctrlKey) {
+                ctrlPressed = true;
+            }
+        });
+        $(document).on('keyup',function(e){
+            ctrlPressed = false;
+        });
+
+        // disable right click and show custom context menu
+        $(".editableTable").bind('contextmenu', function (e) {
+            currentElement = e.target;
+            var top = e.pageY+5;
+            var left = e.pageX;
+
+            // Show contextmenu
+            $(".context-menu").toggle(100).css({
+                top: top + "px",
+                left: left + "px"
+            });
+
+            // disable default context menu
+            return false;
+        });
+
+            // Hide context menu
+        $(document).bind('contextmenu click',function(){
+             $(".context-menu").hide();
+            
+        });
+
+            // disable context-menu from custom menu
+            $('.editableTable').bind('contextmenu',function(){
+                return false;
+            });
+        
+        // Selection 
+         $(document).on('click','.editableTable td',function(){
+              if (ctrlPressed) {
+                 $(this).closest('td').toggleClass('selected');
+              }
+         });          
+
+        // Clicked context-menu item
+        
+        $('#addRow').click(function(){
+            var html = "<tr><td contenteditable=true></td><td contenteditable=true></td><td contenteditable=true></td> <td contenteditable=true></td><td contenteditable=true></td> <td contenteditable=true></td> <td contenteditable=true></td><td contenteditable=true></td> <td contenteditable=true></td></tr>";
+            var elem = currentElement.closest('tr');
+           $(html).insertAfter(elem);
+        });
+        $('#addColumn').click(function(){
+            var html = "<td contenteditable=true></td>";
+            var elem = $(currentElement.closest('table')).find('tr');
+            var row = currentElement.closest('table tr').rowIndex;
+            var column = currentElement.cellIndex;           
+            $(elem).each(function(){
+                    $(this).find('td').eq(column).after(html);
+            });
+        });
+
+        $('#deleteColumn').click(function(){           
+            var elem = $(currentElement.closest('table')).find('tr');
+            var row = currentElement.closest('table tr').rowIndex;
+            var column = currentElement.cellIndex;           
+            $(elem).each(function(){
+                    $(this).find('td').eq(column).remove();
+            });
+        });
+        
+
+        $('#mergeColumns').click(function(e){ 
+            e.preventDefault();          
+            var elem = $(currentElement.closest('table')).find('tr');
+            var tdLength = $(currentElement.closest('tr')).find('td').length;
+            var rows = currentElement.closest('table tr').rowIndex;
+            var column = currentElement.cellIndex; 
+            var text = $(currentElement).text();
+            var count =0;
+            var firstIndex = 0;
+            var colspan = 0;
+            var rowspan = 0;
+            var trigger = 0;    
+            $($(elem).find('td.selected')).each(function(i,v){
+                if(i == 0){
+                    rowspan = $(v).attr('rowspan');
+                    if(rowspan == undefined){
+                        rowspan = 1;
+                    }
+                    colspan = $(v).attr('colspan');
+                    if(colspan == undefined){
+                        colspan = 1;
+                    }      
+                }else{
+                    rowspan++;
+                }                                 
+            });
+            $($(elem).find('td.selected')).each(function(i,v){
+                if(i == 0){
+                    $(v).attr('rowspan',rowspan).attr('colspan',colspan).text(text).removeClass('selected');
+                }else{
+                     $(v).remove();
+                }             
+            });
+        });
+
+        $('#mergeRows').click(function(e){ 
+            e.preventDefault();          
+            var elem = $(currentElement.closest('table')).find('tr');
+            var tdLength = $(currentElement.closest('tr')).find('td').length;
+            var rows = currentElement.closest('table tr').rowIndex;
+            var column = currentElement.cellIndex; 
+            var text = $(currentElement).text();
+            var count =0;
+            var firstIndex = 0;
+            var colspan = 0;
+            var rowspan = 0;
+            var trigger = 0;    
+            $($(elem).find('td.selected')).each(function(i,v){
+                if(i == 0){
+                    rowspan = $(v).attr('rowspan');
+                    if(rowspan == undefined){
+                        rowspan = 1;
+                    }
+                    colspan = $(v).attr('colspan');
+                    if(colspan == undefined){
+                        colspan = 1;
+                    }      
+                }else{
+                    colspan++;
+                }                                 
+            });
+            $($(elem).find('td.selected')).each(function(i,v){
+                if(i == 0){
+                    $(v).attr('rowspan',rowspan).attr('colspan',colspan).text(text).removeClass('selected');
+                }else{
+                     $(v).remove();
+                }             
+            });
+        });
+
+        $('#deleteRow').click(function(){
+           if($(currentElement.closest('table')).find('tr').length > 1){
+                var elem = currentElement.closest('tr');
+                elem.remove();
+           }else{
+               alert("This is the last row. Can't delete.");
+           }
+        });
+        
+    });
+
+function myfunc(){
+     var id = $('#txt_id').val();
+     if (id==undefined){
+        $.ajax({ 
+                            type:"POST",
+                            url:"updatetable",
+                            data:{code:$('.editableTable').html(),id:id}, 
+                            success: function(msg){
+                                    
+                            }
+                    });
+     }else{
+         $.ajax({ 
+                            type:"POST",
+                            url:"updatetable",
+                            data:{code:$('.editableTable').html(),id:id}, 
+                            success: function(msg){
+                                    
+                            }
+                    });
+                    }
+
+}
+
+{% endblock %}
 

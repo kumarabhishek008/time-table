@@ -5,21 +5,20 @@ from django.contrib import auth
 from django.core.exceptions import *
 from django.contrib.auth.decorators import login_required
 from .models import timetablecolumn
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 # Create your views here.
 @login_required(login_url='/login')
 def index(request):
-    user_table1 = timetablecolumn.objects.filter(user= request.user,row = "first")
-    user_table2 = timetablecolumn.objects.filter(user=request.user,row= "second")
-    user_table3 = timetablecolumn.objects.filter(user=request.user,row= "third")
-    user_table4 = timetablecolumn.objects.filter(user=request.user,row= "fourth")
-    user_table5 = timetablecolumn.objects.filter(user=request.user,row= "fifth")
-    user_table6 = timetablecolumn.objects.filter(user=request.user,row= "sixth")
     
-    return render(request,'usertt/index.html',{'usertable_1':user_table1,'usertable_2':user_table2,
-                    'usertable_3':user_table3,'usertable_4':user_table4,'usertable_5':user_table5,
-                    'usertable_6':user_table6})
+    user_table1 = timetablecolumn.objects.filter(user= request.user)[:1]
+    
+    len_of_usertable = len(user_table1)
+
+    
+    return render(request,'usertt/index.html',{'usertable_1':user_table1,'user_len':len_of_usertable})
 
 def register(request):
     if request.method =='POST':
@@ -86,50 +85,31 @@ def logout(request):
         auth.logout(request)
         return redirect('/')
 
-def DeleteRow(request):
-    if request.method=='POST':
-        deleteday = request.POST['row']
-        deletetable = timetablecolumn.objects.filter(user=request.user,c1=deleteday)
-        deletetable.delete()
-        return redirect('/')
-
-
-def AddTable(request):
-    add_table = timetablecolumn.objects.create(row="first")
-    add_table.save()
-    add_table.user.add(request.user)
-    add_table.user.set([request.user])
-    return redirect('/')
-
-def UpdateRow(request):
-    return redirect('/')
 
 
 
-'''def editcontent(request):
-    form = timetable_form()
-    
-
+@login_required(login_url='/login')
+@csrf_exempt
+def UpdateorCreateRow(request):
     if request.method == 'POST':
-        ROw = request.POST['row']
-        table = timetablecolumn.objects.get(row=ROw)
-
-        form = timetable_form(request.POST,instance=table)
-        if form.is_valid:
-            form.save()
-            return redirect('/')
-
+        update_code = request.POST['code']
+        table_id = request.POST['id']
+        print("data",table_id)
+        if table_id == '' :
+            create_table=timetablecolumn.objects.create(c1=update_code)
+            create_table.save()
+            create_table.user.add(request.user)
+            create_table.user.set([request.user]) 
+        
+        else:  
+            if timetablecolumn.objects.filter(user=request.user,id=table_id).exists():
+                update_row = timetablecolumn.objects.filter(user=request.user,id=table_id)
+                update_row.update(c1=update_code)
+                return redirect('/')
     return redirect('/')
 
-def delete(request):
-    form1 = DeleteRow()
-    if request.method=='POST':
-        Row = request.POST['row']
-        deleterow = timetablecolumn.objects.get(row=Row)
-        deleterow.delete()
-        form1 = DeleteRow(request.POST,instance=deleterow)
-        if form1.is_valid:
-            form1.save()
-            return redirect('/')
-    else:
-        return redirect('/')'''
+
+
+
+      
+      

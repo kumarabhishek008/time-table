@@ -5,6 +5,6 @@ urlpatterns = [
     path('login',views.login,name='login'),
     path('register',views.register,name='register'),
     path('logout',views.logout,name='logout'),
-    path('deleterow',views.DeleteRow,name="deleterow"),
-    path('addtable',views.AddTable,name='addtable')
+    path('updatetable',views.UpdateorCreateRow,name='updaterow'),
+    
 ]
