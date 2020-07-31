@@ -14,7 +14,6 @@ class timetablecolumn(models.Model):
         return self.c1
 
 
-
     
     
 
