@@ -7,4 +7,5 @@ urlpatterns = [
     path('logout',views.logout,name='logout'),
     path('updatetable',views.UpdateorCreateRow,name='updaterow'),
     
+    
 ]
